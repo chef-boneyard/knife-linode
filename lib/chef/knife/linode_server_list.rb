@@ -47,10 +47,18 @@ class Chef
           server_list << server.ips.map { |x| x.ip }.join(",")
           server_list << begin
             case server.status
+            when -2
+              ui.color("Boot Failed", :red)
+            when -1
+              ui.color("Being Created", :yellow)
+            when 0
+              ui.color("Brand New", :yellow)
             when 1
               ui.color("Running", :green)
             when 2
               ui.color("Powered Off", :red)
+            when 3
+              ui.color("Shutting Down", :red)
             else
               ui.color("UNKNOWN: #{server.status}", :yellow)
             end
