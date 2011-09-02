@@ -39,7 +39,7 @@ class Chef
             puts "\n"
             confirm("Do you really want to reboot this server")
 
-            connection.linode_reboot(linode_id)
+            connection.servers.get(linode_id).reboot
 
             ui.warn("Rebooted server #{linode_id}")
           rescue Fog::Compute::Linode::NotFound
