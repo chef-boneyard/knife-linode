@@ -16,32 +16,28 @@ This plugin is distributed as a Ruby Gem. To install it, run:
 
 Depending on your system's configuration, you may need to run this command with root privileges.
 
-******************** FIXME: CLEAN UP EVERYTHING BELOW **************************
-
 = CONFIGURATION:
 
-In order to communicate with the Amazon's EC2 API you will have to tell Knife about your AWS Access Key and Secret Access Key.  The easiest way to accomplish this is to create some entries in your <tt>knife.rb</tt> file:
+In order to communicate with the Linode API you will have to tell Knife about your Linode API Key.  The easiest way to accomplish this is to create some entries in your <tt>knife.rb</tt> file:
 
-    knife[:aws_access_key_id]  = "Your AWS Access Key ID"
-    knife[:aws_secret_access_key] = "Your AWS Secret Access Key"
+    knife[:linode_api_key] = "Your Linode API Key"
 
 If your knife.rb file will be checked into a SCM system (ie readable by others) you may want to read the values from environment variables:
 
-    knife[:aws_access_key_id] = "#{ENV['AWS_ACCESS_KEY_ID']}"
-    knife[:aws_secret_access_key] = "#{ENV['AWS_SECRET_ACCESS_KEY']}"
+    knife[:linode_api_key] = "#{ENV['LINODE_API_KEY']}"
 
-You also have the option of passing your AWS API Key/Secret into the individual knife subcommands using the <tt>-A</tt> (or <tt>--aws-access-key-id</tt>) <tt>-K</tt> (or <tt>--aws-secret-access-key</tt>) command options
+You also have the option of passing your Linode API Key into the individual knife subcommands using the <tt>-A</tt> (or <tt>--linode-api-key</tt>) command option
 
-    # provision a new m1.small Ubuntu 10.04 webserver
+    # provision a new m1.small Ubuntu 10.04 webserver  # FIXME: change from EC2 to linode
     knife ec2 server create 'role[webserver]' -I ami-7000f019 -f m1.small -A 'Your AWS Access Key ID' -K "Your AWS Secret Access Key"
 
 Additionally the following options may be set in your `knife.rb`:
 
-* flavor
-* image
-* availability_zone
-* aws_ssh_key_id
-* region
+* linode_flavor
+* linode_image
+* linode_kernel
+* ssh_password
+* bootstrap_version
 * distro
 * template_file
 
@@ -49,25 +45,25 @@ Additionally the following options may be set in your `knife.rb`:
 
 This plugin provides the following Knife subcommands.  Specific command options can be found by invoking the subcommand with a <tt>--help</tt> flag
 
-== knife ec2 server create
+== knife linode server create
 
-Provisions a new server in the Amazon EC2 and then perform a Chef bootstrap (using the SSH protocol).  The goal of the bootstrap is to get Chef installed on the target system so it can run Chef Client with a Chef Server. The main assumption is a baseline OS installation exists (provided by the provisioning). It is primarily intended for Chef Client systems that talk to a Chef server.  By default the server is bootstrapped using the {ubuntu10.04-gems}[https://github.com/opscode/chef/blob/master/chef/lib/chef/knife/bootstrap/ubuntu10.04-gems.erb] template.  This can be overridden using the <tt>-d</tt> or <tt>--template-file</tt> command options.
+Provisions a new server in Linode and then perform a Chef bootstrap (using the SSH protocol).  The goal of the bootstrap is to get Chef installed on the target system so it can run Chef Client with a Chef Server. The main assumption is a baseline OS installation exists (provided by the provisioning). It is primarily intended for Chef Client systems that talk to a Chef server.  By default the server is bootstrapped using the {ubuntu10.04-gems}[https://github.com/opscode/chef/blob/master/chef/lib/chef/knife/bootstrap/ubuntu10.04-gems.erb] template.  This can be overridden using the <tt>-d</tt> or <tt>--template-file</tt> command options.
 
-== knife ec2 server delete
+== knife linode server delete
 
-Deletes an existing server in the currently configured AWS account.  <b>PLEASE NOTE</b> - this does not delete the associated node and client objects from the Chef server.
+Deletes an existing server in the currently configured Linode account.  <b>PLEASE NOTE</b> - this does not delete the associated node and client objects from the Chef server.
 
-== knife ec2 server list
+== knife linode server list
 
-Outputs a list of all servers in the currently configured AWS account.  <b>PLEASE NOTE</b> - this shows all instances associated with the account, some of which may not be currently managed by the Chef server.
+Outputs a list of all servers in the currently configured Linode account.  <b>PLEASE NOTE</b> - this shows all instances associated with the account, some of which may not be currently managed by the Chef server.
 
-== knife ec2 instance data
+== knife linode server reboot
 
-Generates instance metadata in meant to be used with Opscode's custom AMIs. This will read your knife configuration <tt>~/.chef/knife.rb</tt> for the validation certificate and Chef server URL to use and output in JSON format. The subcommand also accepts a list of roles/recipes that will be in the node's initial run list.
-
-<b>PLEASE NOTE</b> - Using Opscode's custom AMIs reflect an older way of launching instances in EC2 for Chef and should be considered DEPRECATED. Leveraging this plugins's <tt>knife ec2 server create</tt> subcommands with a base AMIs directly from your Linux distribution (ie Ubuntu AMIs from Canonical) is much preferred and more flexible.  Although this subcommand will remain, the Opscode custom AMIs are currently out of date.
-
-In-depth usage instructions can be found on the {Chef Wiki}[http://wiki.opscode.com/display/chef/Amazon+EC2+AMIs+with+Chef].
+== knife linode datacenter list
+== knife linode flavor list
+== knife linode image list
+== knife linode kernel list
+== knife linode stackscript list
 
 = LICENSE:
 
