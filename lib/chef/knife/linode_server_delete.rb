@@ -37,7 +37,7 @@ class Chef
           begin
             server = connection.servers.get(linode_id)
 
-            msg_pair("Linode ID", server.id)
+            msg_pair("Linode ID", server.id.to_s)
             msg_pair("Name", server.name)
             msg_pair("IPs", server.ips.map { |x| x.ip }.join(",") )
             msg_pair("Status", status_to_ui(server.status) )
