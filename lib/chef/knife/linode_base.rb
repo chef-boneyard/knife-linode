@@ -79,6 +79,25 @@ class Chef
         end
       end
 
+      def status_to_ui(status)
+        case status
+        when -2
+          ui.color("Boot Failed", :red)
+        when -1
+          ui.color("Being Created", :yellow)
+        when 0
+          ui.color("Brand New", :yellow)
+        when 1
+          ui.color("Running", :green)
+        when 2
+          ui.color("Powered Off", :red)
+        when 3
+          ui.color("Shutting Down", :red)
+        else
+          ui.color("UNKNOWN: #{server.status}", :yellow)
+        end
+      end
+
     end
   end
 end

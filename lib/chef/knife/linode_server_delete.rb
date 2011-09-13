@@ -35,7 +35,13 @@ class Chef
         @name_args.each do |linode_id|
 
           begin
-            # FIXME: display info about server
+            server = connection.servers.get(linode_id)
+
+            msg_pair("Linode ID", server.id)
+            msg_pair("Name", server.name)
+            msg_pair("IPs", server.ips.map { |x| x.ip }.join(",") )
+            msg_pair("Status", status_to_ui(server.status) )
+
             puts "\n"
             confirm("Do you really want to delete this server")
 

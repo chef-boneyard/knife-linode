@@ -32,10 +32,16 @@ class Chef
 
         validate!
 
-	@name_args.each do |linode_id|
+        @name_args.each do |linode_id|
 
           begin
-            # FIXME: display info about server
+            server = connection.servers.get(linode_id)
+
+            msg_pair("Linode ID", server.id)
+            msg_pair("Name", server.name)
+            msg_pair("IPs", server.ips.map { |x| x.ip }.join(",") )
+            msg_pair("Status", status_to_ui(server.status) )
+
             puts "\n"
             confirm("Do you really want to reboot this server")
 
@@ -44,7 +50,7 @@ class Chef
             ui.warn("Rebooted server #{linode_id}")
           rescue Fog::Compute::Linode::NotFound
             ui.error("Could not locate server '#{linode_id}'.")
-	  end
+	        end
 
         end
 
