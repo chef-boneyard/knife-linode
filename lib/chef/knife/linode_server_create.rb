@@ -22,42 +22,49 @@ require 'chef/knife/linode_base'
 
 class Chef
   class Knife
-    class LinodeServerCreate < Chef::Knife
+    class LinodeServerCreate < Knife
 
       include Knife::LinodeBase
 
-      # deps do
-      #   require 'fog'
-      #   require 'readline'
-      #   require 'chef/json_compat'
-      #   require 'chef/knife/bootstrap'
-      #   Chef::Knife::Bootstrap.load_deps
-      # end
+       deps do
+         require 'fog'
+         require 'readline'
+         require 'chef/json_compat'
+         require 'chef/knife/bootstrap'
+         Chef::Knife::Bootstrap.load_deps
+       end
 
       banner "knife linode server create (options)"
 
       attr_accessor :initial_sleep_delay
 
-      option :flavor,
+      option :linode_flavor,
         :short => "-f FLAVOR",
-        :long => "--flavor FLAVOR",
+        :long => "--linode-flavor FLAVOR",
         :description => "The flavor of server",
         :proc => Proc.new { |f| Chef::Config[:knife][:linode_flavor] = f },
         :default => 1
 
-      option :image,
+      option :linode_image,
         :short => "-I IMAGE",
-        :long => "--image IMAGE",
+        :long => "--linode-image IMAGE",
         :description => "The image for the server",
         :proc => Proc.new { |i| Chef::Config[:knife][:linode_image] = i },
         :default => 83
 
-      option :kernel,
-        :short => "-k IMAGE",
-        :long => "--kernel IMAGE",
+      option :linode_kernel,
+        :short => "-k KERNEL",
+        :long => "--linode-kernel KERNEL",
         :description => "The kernel for the server",
-        :proc => Proc.new { |i| Chef::Config[:knife][:linode_kernel] = k },
+        :proc => Proc.new { |i| Chef::Config[:knife][:linode_kernel] = i },
         :default => 133
+
+      option :linode_datacenter,
+        :short => "-D DATACENTER",
+        :long => "--linode-datacenter DATACENTER",
+        :description => "The datacenter for the server",
+        :proc => Proc.new { |i| Chef::Config[:knife][:linode_datacenter] = i },
+        :default => 3
 
       option :chef_node_name,
         :short => "-N NAME",
@@ -151,9 +158,11 @@ class Chef
       end
 
       def run
+        $stdout.sync = true
+
         validate!
 
-        datacenter = connection.data_centers.select { |dc| dc.id == 3 }.first
+        datacenter = connection.data_centers.select { |dc| dc.id == locate_config_value(:linode_datacenter) }.first
 
         flavor = connection.flavors.get(locate_config_value(:linode_flavor))
 
@@ -173,7 +182,6 @@ class Chef
         }
  
         bootstrap_for_node(server,fqdn).run
-
       end
 
       def bootstrap_for_node(server,fqdn)
