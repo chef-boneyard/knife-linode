@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-#require 'chef/knife/linode_base'
+require 'chef/knife/linode_base'
  
 class Chef
   class Knife

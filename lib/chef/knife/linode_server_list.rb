@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-# requires ruby 1.9.2
+require 'chef/knife/linode_base'
 
 class Chef
   class Knife
