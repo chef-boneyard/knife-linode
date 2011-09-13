@@ -164,11 +164,11 @@ class Chef
 
         datacenter = connection.data_centers.select { |dc| dc.id == locate_config_value(:linode_datacenter) }.first
 
-        flavor = connection.flavors.get(locate_config_value(:linode_flavor))
+        flavor = connection.flavors.get(locate_config_value(:linode_flavor).to_i)
 
-        image = connection.images.get(locate_config_value(:linode_image))
+        image = connection.images.get(locate_config_value(:linode_image).to_i)
 
-        kernel = connection.kernels.get(locate_config_value(:linode_kernel))
+        kernel = connection.kernels.get(locate_config_value(:linode_kernel).to_i)
 
         server = connection.servers.create(:data_center => datacenter, :flavor => flavor, :image => image, :kernel => kernel, :type => "ext3", :payment_terms => 1, :stack_script => nil , :name => "foo", :password => locate_config_value(:ssh_password))
 
