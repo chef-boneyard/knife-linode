@@ -66,6 +66,11 @@ class Chef
         :proc => Proc.new { |i| Chef::Config[:knife][:linode_datacenter] = i },
         :default => 3
 
+      option :linode_node_name,
+        :short => "-L NAME",
+        :long => "--linode-node-name NAME",
+        :description => "The Linode node name for your new node"
+
       option :chef_node_name,
         :short => "-N NAME",
         :long => "--node-name NAME",
@@ -170,7 +175,21 @@ class Chef
 
         kernel = connection.kernels.get(locate_config_value(:linode_kernel).to_i)
 
-        server = connection.servers.create(:data_center => datacenter, :flavor => flavor, :image => image, :kernel => kernel, :type => "ext3", :payment_terms => 1, :stack_script => nil , :name => "foo", :password => locate_config_value(:ssh_password))
+        # FIXME: tweakable stack_script
+        # FIXME: tweakable payment terms
+        # FIXME: tweakable disk type
+
+        server = connection.servers.create(
+                    :data_center => datacenter,
+                    :flavor => flavor,
+                    image => image,
+                    :kernel => kernel,
+                    :type => "ext3",
+                    :payment_terms => 1,
+                    :stack_script => nil,
+                    :name => locate_config_value(:linode_node_name),
+                    :password => locate_config_value(:ssh_password)
+                 )
 
         print "\n#{ui.color("Waiting for sshd", :magenta)}"
 
