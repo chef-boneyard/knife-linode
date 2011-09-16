@@ -191,9 +191,15 @@ class Chef
                     :password => locate_config_value(:ssh_password)
                  )
 
-        print "\n#{ui.color("Waiting for sshd", :magenta)}"
-
         fqdn = server.ips.select { |lip| !( lip.ip =~ /^192\.168\./ || lip.ip =~ /^10\./ || lip.ip =~ /^172\.(1[6-9]|2[0-9]|3[0-1])\./ ) }.first.ip
+
+        msg_pair("Linode ID", server.id.to_s)
+        msg_pair("Name", server.name)
+        msg_pair("IPs", server.ips.map { |x| x.ip }.join(",") )
+        msg_pair("Status", status_to_ui(server.status) )
+        msg_pair("Public IP", fqdn)
+
+        print "\n#{ui.color("Waiting for sshd", :magenta)}"
 
         print(".") until tcp_test_ssh(fqdn) {
           sleep @initial_sleep_delay ||= 10
