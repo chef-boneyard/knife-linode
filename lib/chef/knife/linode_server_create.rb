@@ -82,12 +82,15 @@ class Chef
         :description => "The ssh username",
         :default => "root"
 
+      chars = ("a".."z").to_a + ("1".."9").to_a + ("A".."Z").to_a
+      defpass = Array.new(20, '').collect{chars[rand(chars.size)]}.push('A').push('a').join
+
       option :ssh_password,
         :short => "-P PASSWORD",
         :long => "--ssh-password PASSWORD",
         :proc => Proc.new { |p| Chef::Config[:knife][:ssh_password] = p },
         :description => "The ssh password",
-        :default => "BarbaZ"
+        :default => defpass
 
       option :identity_file,
         :short => "-i IDENTITY_FILE",
@@ -182,7 +185,7 @@ class Chef
         server = connection.servers.create(
                     :data_center => datacenter,
                     :flavor => flavor,
-                    image => image,
+                    :image => image,
                     :kernel => kernel,
                     :type => "ext3",
                     :payment_terms => 1,
