@@ -50,14 +50,14 @@ class Chef
         :long => "--linode-image IMAGE",
         :description => "The image for the server",
         :proc => Proc.new { |i| Chef::Config[:knife][:linode_image] = i },
-        :default => 83
+        :default => 93 
 
       option :linode_kernel,
         :short => "-k KERNEL",
         :long => "--linode-kernel KERNEL",
         :description => "The kernel for the server",
         :proc => Proc.new { |i| Chef::Config[:knife][:linode_kernel] = i },
-        :default => 133
+        :default => 138
 
       option :linode_datacenter,
         :short => "-D DATACENTER",
