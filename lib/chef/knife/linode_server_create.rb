@@ -50,7 +50,7 @@ class Chef
         :long => "--linode-image IMAGE",
         :description => "The image for the server",
         :proc => Proc.new { |i| Chef::Config[:knife][:linode_image] = i },
-        :default => 93 
+        :default => 93
 
       option :linode_kernel,
         :short => "-k KERNEL",
@@ -170,7 +170,8 @@ class Chef
 
         validate!
 
-        datacenter = connection.data_centers.select { |dc| dc.id == locate_config_value(:linode_datacenter) }.first
+        datacenter_id = locate_config_value(:linode_datacenter).to_i
+        datacenter = connection.data_centers.select { |dc| dc.id == datacenter_id }.first
 
         flavor = connection.flavors.get(locate_config_value(:linode_flavor).to_i)
 
@@ -208,7 +209,7 @@ class Chef
           sleep @initial_sleep_delay ||= 10
           puts("done")
         }
- 
+
         bootstrap_for_node(server,fqdn).run
       end
 
