@@ -201,6 +201,8 @@ class Chef
         msg_pair("IPs", server.ips.map { |x| x.ip }.join(",") )
         msg_pair("Status", status_to_ui(server.status) )
         msg_pair("Public IP", fqdn)
+        msg_pair("User", config[:ssh_user])
+        msg_pair("Password", locate_config_value(:ssh_password))
 
         print "\n#{ui.color("Waiting for sshd", :magenta)}"
 
