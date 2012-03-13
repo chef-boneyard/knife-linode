@@ -83,14 +83,14 @@ class Chef
         :default => "root"
 
       chars = ("a".."z").to_a + ("1".."9").to_a + ("A".."Z").to_a
-      defpass = Array.new(20, '').collect{chars[rand(chars.size)]}.push('A').push('a').join
+      @@defpass = Array.new(20, '').collect{chars[rand(chars.size)]}.push('A').push('a').join
 
       option :ssh_password,
         :short => "-P PASSWORD",
         :long => "--ssh-password PASSWORD",
         :proc => Proc.new { |p| Chef::Config[:knife][:ssh_password] = p },
         :description => "The ssh password",
-        :default => defpass
+        :default => @@defpass
 
       option :identity_file,
         :short => "-i IDENTITY_FILE",
@@ -202,6 +202,11 @@ class Chef
         msg_pair("IPs", server.ips.map { |x| x.ip }.join(",") )
         msg_pair("Status", status_to_ui(server.status) )
         msg_pair("Public IP", fqdn)
+        msg_pair("User", config[:ssh_user])
+        password = locate_config_value(:ssh_password)
+        if password == @@defpass
+          msg_pair("Password", password)
+        end
 
         print "\n#{ui.color("Waiting for sshd", :magenta)}"
 
