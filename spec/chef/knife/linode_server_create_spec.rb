@@ -66,7 +66,7 @@ describe Chef::Knife::LinodeServerCreate do
 
     let(:mock_server) {
       mock("Fog::Compute::Linode::Server").tap do |ms|
-        ms.stub(:ips).and_return([OpenStruct.new(:ip => "1.2.3.4")])
+        ms.stub(:ips).and_return([mock_ip("1.2.3.4")])
         ms.stub(:id).and_return(42)
         ms.stub(:name).and_return("Test Linode")
         ms.stub(:status).and_return(1)
@@ -115,6 +115,10 @@ describe Chef::Knife::LinodeServerCreate do
       subject.run
     end
   end
+end
+
+def mock_ip(ip)
+  OpenStruct.new(:ip => ip)
 end
 
 def configure_chef(subject)
