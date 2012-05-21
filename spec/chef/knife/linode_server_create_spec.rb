@@ -114,6 +114,46 @@ describe Chef::Knife::LinodeServerCreate do
       Chef::Knife::Bootstrap.should_receive(:new)
       subject.run
     end
+
+    it "should set the bootstrap name_args to the Linode's public IP" do
+      ips = %w( 1.2.3.4 192.168.1.1 ).map { |ip| mock_ip(ip) }
+      mock_server.stub(:ips).and_return(ips)
+
+      mock_bootstrap.should_receive(:name_args=).with([ips.first.ip])
+
+      subject.run
+    end
+
+    it "should set the bootstrap config correctly" do
+      chef_config = configure_chef(subject)
+
+      mock_config = {}
+      mock_bootstrap.stub(:config).and_return(mock_config)
+
+      params = [
+        :run_list, :ssh_user, :identity_file, :ssh_password, :chef_node_name,
+        :prerelease, :bootstrap_version, :distro, :use_sudo, :template_file,
+        :environment, :no_host_key_verify
+      ]
+
+      subject.run
+
+      params.each do |param|
+        case param
+        when :use_sudo
+          mock_config[:use_sudo].should be_false
+        else
+          expectation = chef_config[param]
+          reality = mock_config[param]
+
+          if reality != expectation
+            $stderr.puts "#{param}: #{reality.inspect} should have been #{expectation.inspect}"
+          end
+
+          reality.should == expectation
+        end
+      end
+    end
   end
 end
 
@@ -132,7 +172,15 @@ def configure_chef(subject)
     :payment_terms => 1,
     :stack_script  => nil,
     :name          => "test_node",
-    :password      => "p4ssw0rd"
+    :password      => "p4ssw0rd",
+  }
+
+  chef_config = {
+    :ssh_user       => "root",
+    :run_list       => [],
+    :identity_file  => "~/.ssh/id_dsa",
+    :chef_node_name => "test_node",
+    :environment    => "_test",
   }
 
   server_params = {}
@@ -156,8 +204,20 @@ def configure_chef(subject)
       Chef::Config[:knife][:ssh_password] = v
     when :type, :payment_terms, :stack_script
       # these are hard-coded in the plugin, so don't add them to the Config
-    else
+    when :name
+      Chef::Config[:knife][:linode_node_name] = v
+      Chef::Config[:knife][:chef_node_name] = v
+    when :datacenter, :flavor, :image, :kernel
       Chef::Config[:knife]["linode_#{k}".to_sym] = v
+    else
+      Chef::Config[:knife][k] = v
     end
   end
+
+  chef_config.each do |k,v|
+    puts "Setting Chef::Config[:#{k}] to #{v}"
+    Chef::Config[:knife][k] = v
+  end
+
+  Chef::Config[:knife].dup
 end
