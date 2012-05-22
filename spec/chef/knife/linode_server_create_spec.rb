@@ -125,10 +125,10 @@ describe Chef::Knife::LinodeServerCreate do
     end
 
     it "should set the bootstrap config correctly" do
-      chef_config = configure_chef(subject)
-
       mock_config = {}
       mock_bootstrap.stub(:config).and_return(mock_config)
+
+      chef_config = configure_chef(subject)
 
       params = [
         :run_list, :ssh_user, :identity_file, :ssh_password, :chef_node_name,
@@ -214,10 +214,11 @@ def configure_chef(subject)
     end
   end
 
+  cli_config = subject.config.dup
   chef_config.each do |k,v|
-    puts "Setting Chef::Config[:#{k}] to #{v}"
-    Chef::Config[:knife][k] = v
+    cli_config[k] = v
   end
+  subject.stub(:config).and_return(cli_config)
 
-  Chef::Config[:knife].dup
+  cli_config.merge(Chef::Config[:knife].dup)
 end
