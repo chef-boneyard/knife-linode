@@ -111,7 +111,7 @@ class Chef
         :long => "--distro DISTRO",
         :description => "Bootstrap a distro using a template",
         :proc => Proc.new { |d| Chef::Config[:knife][:distro] = d },
-        :default => "ubuntu10.04-gems"
+        :default => "chef-full"
 
       option :template_file,
         :long => "--template-file TEMPLATE",
