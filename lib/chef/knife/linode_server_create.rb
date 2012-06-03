@@ -126,11 +126,11 @@ class Chef
         :proc => lambda { |o| o.split(/[\s,]+/) },
         :default => []
 
-      option :no_host_key_verify,
-        :long => "--no-host-key-verify",
-        :description => "Disable host key verification",
+      option :host_key_verify,
+        :long => "--[no-]host-key-verify",
+        :description => "Verify host key, enabled by default",
         :boolean => true,
-        :default => false
+        :default => true
 
       def tcp_test_ssh(hostname)
         Chef::Log.debug("testing ssh connection to #{hostname}")
@@ -232,7 +232,7 @@ class Chef
         bootstrap.config[:use_sudo] = true unless config[:ssh_user] == 'root'
         bootstrap.config[:template_file] = locate_config_value(:template_file)
         bootstrap.config[:environment] = config[:environment]
-        bootstrap.config[:no_host_key_verify] = config[:no_host_key_verify]
+        bootstrap.config[:host_key_verify] = config[:host_key_verify]
         bootstrap
       end
 
