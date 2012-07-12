@@ -1,4 +1,3 @@
-
 # Author:: Adam Jacob (<adam@opscode.com>)
 # Author:: Seth Chisamore (<schisamo@opscode.com>)
 # Author:: Lamont Granquist (<lamont@opscode.com>)
@@ -128,7 +127,7 @@ class Chef
 
       option :host_key_verify,
         :long => "--[no-]host-key-verify",
-        :description => "Verify host key, enabled by default",
+        :description => "Indicates that host key verification is disabled",
         :boolean => true,
         :default => true
 
