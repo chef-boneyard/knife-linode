@@ -1,4 +1,3 @@
-
 # Author:: Adam Jacob (<adam@opscode.com>)
 # Author:: Seth Chisamore (<schisamo@opscode.com>)
 # Author:: Lamont Granquist (<lamont@opscode.com>)
@@ -26,7 +25,7 @@ class Chef
 
       include Knife::LinodeBase
 
-      banner "knife linode server reboot (options)"
+      banner "knife linode server reboot LINODE_ID (options)"
 
       def run
 
