@@ -18,14 +18,14 @@
 #
 
 require 'chef/knife/linode_base'
- 
+
 class Chef
   class Knife
     class LinodeServerDelete < Chef::Knife
 
       include Knife::LinodeBase
 
-      banner "knife linode server delete LINODE_ID (options)"
+      banner "knife linode server delete LINODE_ID|LINODE_LABEL (options)"
 
       def run
 
@@ -34,7 +34,10 @@ class Chef
         @name_args.each do |linode_id|
 
           begin
-            server = connection.servers.get(linode_id)
+            server = connection.servers.detect do |s|
+              s.id.to_s == linode_id || s.name == linode_id
+            end
+            delete_id = server.id
 
             msg_pair("Linode ID", server.id.to_s)
             msg_pair("Name", server.name)
@@ -44,9 +47,9 @@ class Chef
             puts "\n"
             confirm("Do you really want to delete this server")
 
-            connection.servers.get(linode_id).destroy
+            connection.servers.get(delete_id).destroy
 
-            ui.warn("Deleted server #{linode_id}")
+            ui.warn("Deleted server #{delete_id}")
           rescue Fog::Compute::Linode::NotFound
             ui.error("Could not locate server '#{linode_id}'.")
           end
