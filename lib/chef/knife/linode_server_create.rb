@@ -233,6 +233,16 @@ class Chef
         bootstrap.config[:template_file] = locate_config_value(:template_file)
         bootstrap.config[:environment] = config[:environment]
         bootstrap.config[:host_key_verify] = config[:host_key_verify]
+        bootstrap.config[:first_boot_attributes] = {
+          'firstboot_linode' => {
+            'server_id' => server.id.to_s,
+            'datacenter_id' => locate_config_value(:linode_datacenter),
+            'flavor_id' => locate_config_value(:linode_flavor),
+            'image_id' => locate_config_value(:linode_image),
+            'kernel_id' => locate_config_value(:linode_kernel),
+            'ip_addresses' => server.ips.map(&:ip)
+          }
+        }
         bootstrap
       end
 
