@@ -4,6 +4,9 @@
 
 This is the official Opscode Knife plugin for Linode. This plugin gives knife the ability to create, bootstrap, and manage Linode instances.
 
+
+In-depth usage instructions can be found on the {Chef Docs}[http://docs.opscode.com/plugin_knife_linode.html].
+
 = INSTALLATION:
 
 Be sure you are running the latest version Chef. Versions earlier than 0.10.0 don't support plugins:
@@ -28,8 +31,8 @@ If your knife.rb file will be checked into a SCM system (ie readable by others) 
 
 You also have the option of passing your Linode API Key into the individual knife subcommands using the <tt>-A</tt> (or <tt>--linode-api-key</tt>) command option
 
-    # provision a new m1.small Ubuntu 10.04 webserver  # FIXME: change from EC2 to linode
-    knife ec2 server create 'role[webserver]' -I ami-7000f019 -f m1.small -A 'Your AWS Access Key ID' -K "Your AWS Secret Access Key"
+    # provision a new Ubuntu 10.04 webserver
+    knife linode server create -r 'role[webserver]' --linode-image 65 --linode-datacenter 2 --linode-flavor 1 --linode-node-name YOUR_LINODE_NODE_NAME
 
 Additionally the following options may be set in your `knife.rb`:
 
@@ -59,11 +62,28 @@ Outputs a list of all servers in the currently configured Linode account.  <b>PL
 
 == knife linode server reboot
 
+Reboots an existing server in the currently configured Linode account.
+
 == knife linode datacenter list
+
+View a list of available data centers, listed by data center ID and location.
+
 == knife linode flavor list
+
+View a list of servers from the Linode environment, listed by ID, name, RAM, disk, and Price.
+
 == knife linode image list
+
+View a list of images from the Linode environment, listed by ID, name, bits, and image size.
+
 == knife linode kernel list
+
+View a a list of available kernels, listed by ID and name.
+
 == knife linode stackscript list
+
+View a list of Linode StackScripts that are currently being used.
+
 
 = LICENSE:
 
