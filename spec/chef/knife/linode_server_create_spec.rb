@@ -95,7 +95,7 @@ describe Chef::Knife::LinodeServerCreate do
       configure_chef(subject)
 
       ### expectation block
-      mock_servers.should_receive(:create) { |arg|
+      mock_servers.should_receive(:create) { |server|
         server.each do |k,v|
           case k
           when :data_center, :flavor, :image, :kernel
