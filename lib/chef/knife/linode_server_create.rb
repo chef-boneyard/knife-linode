@@ -132,6 +132,15 @@ class Chef
         :boolean => true,
         :default => true
 
+      Chef::Config[:knife][:hints] ||= {"linode" => {}}
+      option :hint,
+        :long => "--hint HINT_NAME[=HINT_FILE]",
+        :description => "Specify Ohai Hint to be set on the bootstrap target.  Use multiple --hint options to specify multiple hints.",
+        :proc => Proc.new { |h|
+           name, path = h.split("=")
+           Chef::Config[:knife][:hints][name] = path ? JSON.parse(::File.read(path)) : Hash.new
+        }
+
       def tcp_test_ssh(hostname)
         Chef::Log.debug("testing ssh connection to #{hostname}")
         tcp_socket = TCPSocket.new(hostname, 22)
@@ -214,6 +223,14 @@ class Chef
           sleep @initial_sleep_delay ||= 10
           puts("done")
         }
+
+        Chef::Config[:knife][:hints]['linode'].merge!({
+            'server_id' => server.id.to_s,
+            'datacenter_id' => locate_config_value(:linode_datacenter),
+            'flavor_id' => locate_config_value(:linode_flavor),
+            'image_id' => locate_config_value(:linode_image),
+            'kernel_id' => locate_config_value(:linode_kernel),
+            'ip_addresses' => server.ips.map(&:ip)})
 
         bootstrap_for_node(server,fqdn).run
       end
