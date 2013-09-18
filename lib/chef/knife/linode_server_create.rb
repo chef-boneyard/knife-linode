@@ -258,6 +258,8 @@ class Chef
         bootstrap.config[:template_file] = locate_config_value(:template_file)
         bootstrap.config[:environment] = config[:environment]
         bootstrap.config[:host_key_verify] = config[:host_key_verify]
+        bootstrap.config[:private_ip] = server.ips.reject{ |ip| ip.public }.first.ip
+        bootstrap.config[:public_ip] = server.public_ip_address
         bootstrap
       end
 
