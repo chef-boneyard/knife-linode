@@ -43,28 +43,28 @@ class Chef
         :long => "--linode-flavor FLAVOR",
         :description => "The flavor of server",
         :proc => Proc.new { |f| Chef::Config[:knife][:linode_flavor] = f },
-        :default => 1
+        :default => 1 # Linode 1024
 
       option :linode_image,
         :short => "-I IMAGE",
         :long => "--linode-image IMAGE",
         :description => "The image for the server",
         :proc => Proc.new { |i| Chef::Config[:knife][:linode_image] = i },
-        :default => 93
+        :default => 99 # Ubuntu 12.04 LTS
 
       option :linode_kernel,
         :short => "-k KERNEL",
         :long => "--linode-kernel KERNEL",
         :description => "The kernel for the server",
         :proc => Proc.new { |i| Chef::Config[:knife][:linode_kernel] = i },
-        :default => 138
+        :default => 138 # Latest 64 bit
 
       option :linode_datacenter,
         :short => "-D DATACENTER",
         :long => "--linode-datacenter DATACENTER",
         :description => "The datacenter for the server",
         :proc => Proc.new { |i| Chef::Config[:knife][:linode_datacenter] = i },
-        :default => 3
+        :default => 3 # Fremont, CA, USA
 
       option :linode_node_name,
         :short => "-L NAME",
