@@ -230,6 +230,7 @@ class Chef
           puts("done")
         }
 
+        Chef::Config[:knife][:hints]['linode'] ||= Hash.new
         Chef::Config[:knife][:hints]['linode'].merge!({
             'server_id' => server.id.to_s,
             'datacenter_id' => locate_config_value(:linode_datacenter),
