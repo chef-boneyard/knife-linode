@@ -1,6 +1,6 @@
 ## Knife Linode
 
-#### Please bare with me while I get this plugin cleaned up! -@jesseadams 07/28/2014
+#### Please bare with me while I get this plugin cleaned up! -[jesseadams](https://github.com/jesseadams) 07/28/2014
 
 ### Description
 
@@ -111,7 +111,9 @@ View a list of Linode StackScripts that are currently being used.
 ## License
 
 Apache License, Version 2.0
+
 Original Author: Adam Jacob (<adam@opscode.com>)
+
 Copyright (c) 2009-2011 Opscode, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not
@@ -128,5 +130,5 @@ the License.
 
 ## Maintainers
 
-* Jesse R. Adams (@jesseadams)
+- Jesse R. Adams ([jesseadams](https://github.com/jesseadams))
 * You?
