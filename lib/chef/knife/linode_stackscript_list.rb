@@ -23,28 +23,25 @@ require 'chef/knife/linode_base'
 class Chef
   class Knife
     class LinodeStackscriptList < Chef::Knife
-
       include Knife::LinodeBase
 
-      banner "knife linode stackscript list (options)"
+      banner 'knife linode stackscript list (options)'
 
       def run
-
         validate!
 
-        server_list = [
-#          ui.color('ID', :bold),
-#          ui.color('Name', :bold),
-        ]
+        # server_list = [
+        #   ui.color('ID', :bold),
+        #   ui.color('Name', :bold)
+        # ]
 
         connection.stack_scripts.each do |stack_script|
           pp stack_script
-          #server_list << kernel.id.to_s
-          #server_list << kernel.name
+          # server_list << kernel.id.to_s
+          # server_list << kernel.name
         end
 
-#        puts ui.list(server_list, :columns_across, 2)
-
+        # puts ui.list(server_list, :columns_across, 2)
       end
     end
   end

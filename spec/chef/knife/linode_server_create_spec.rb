@@ -1,9 +1,14 @@
+# encoding: UTF-8
+# rubocop:disable Style/MethodLength, Style/CyclomaticComplexity, Style/LineLength
+
 require 'spec_helper'
 require 'linode_server_create'
 
 class MockSocket < BasicSocket
   def initialize; end
+
   def gets; end
+
   def close; end
 end
 
@@ -20,56 +25,56 @@ describe Chef::Knife::LinodeServerCreate do
     allow(subject).to receive(:print)
   end
 
-  describe "#tcp_test_ssh" do
-    let(:empty_block) { lambda {} }
+  describe '#tcp_test_ssh' do
+    let(:empty_block) { lambda -> {} }
 
     before :each do
       allow(TCPSocket).to receive(:new).and_return(mock_socket)
     end
 
-    it "should open a socket to the host on port 22" do
-      hostname = "foo.example.com"
-      expect(IO).to receive(:select).with([mock_socket], anything(), anything(), anything()).and_return([mock_socket])
+    it 'should open a socket to the host on port 22' do
+      hostname = 'foo.example.com'
+      expect(IO).to receive(:select).with([mock_socket], anything, anything, anything).and_return([mock_socket])
       expect(TCPSocket).to receive(:new).with(hostname, 22).and_return(mock_socket)
       subject.tcp_test_ssh(hostname, &empty_block)
     end
 
-    it "should return true if the socket is listening" do
-      allow(IO).to receive(:select).with([mock_socket], anything(), anything(), anything()).and_return([mock_socket])
-      expect(subject.tcp_test_ssh("foo.example.com", &empty_block)).to be_truthy
+    it 'should return true if the socket is listening' do
+      allow(IO).to receive(:select).with([mock_socket], anything, anything, anything).and_return([mock_socket])
+      expect(subject.tcp_test_ssh('foo.example.com', &empty_block)).to be_truthy
     end
 
-    it "should return false if the socket is NOT listening" do
-      allow(IO).to receive(:select).with([mock_socket], anything(), anything(), anything()).and_return(nil)
-      expect(subject.tcp_test_ssh("foo.example.com", &empty_block)).to be_falsey
+    it 'should return false if the socket is NOT listening' do
+      allow(IO).to receive(:select).with([mock_socket], anything, anything, anything).and_return(nil)
+      expect(subject.tcp_test_ssh('foo.example.com', &empty_block)).to be_falsey
     end
 
     # TODO: Add more specs for behavior of rescue blocks
   end
 
-  describe "#run" do
-    let(:mock_bootstrap) {
-      double("Chef::Knife::Bootstrap").tap do |mb|
+  describe '#run' do
+    let(:mock_bootstrap) do
+      double('Chef::Knife::Bootstrap').tap do |mb|
         allow(mb).to receive(:run)
         allow(mb).to receive(:name_args=)
         allow(mb).to receive(:config).and_return({})
       end
-    }
+    end
 
-    let(:mock_server) {
-      double("Fog::Compute::Linode::Server").tap do |ms|
-        allow(ms).to receive(:ips).and_return([mock_ip("1.2.3.4")])
+    let(:mock_server) do
+      double('Fog::Compute::Linode::Server').tap do |ms|
+        allow(ms).to receive(:ips).and_return([mock_ip('1.2.3.4')])
         allow(ms).to receive(:id).and_return(42)
-        allow(ms).to receive(:name).and_return("Test Linode")
+        allow(ms).to receive(:name).and_return('Test Linode')
         allow(ms).to receive(:status).and_return(1)
       end
-    }
+    end
 
-    let(:mock_servers) {
-      double("Fog::Collection").tap do |ms|
+    let(:mock_servers) do
+      double('Fog::Collection').tap do |ms|
         allow(subject.connection).to receive(:servers).and_return(ms)
       end
-    }
+    end
 
     before :each do
       allow(Chef::Knife::Bootstrap).to receive(:new).and_return(mock_bootstrap)
@@ -78,18 +83,18 @@ describe Chef::Knife::LinodeServerCreate do
       allow(subject.connection).to receive(:servers).and_return(mock_servers)
     end
 
-    it "should validate the Linode config keys exist" do
+    it 'should validate the Linode config keys exist' do
       expect(subject).to receive(:validate!)
       subject.run
     end
 
-    it "should call #create on the servers collection with the correct params" do
+    it 'should call #create on the servers collection with the correct params' do
       skip 'fails - arg variable does not exist'
 
       configure_chef(subject)
 
       expect(mock_servers).to receive(:create) { |server|
-        server.each do |k,v|
+        server.each do |k, v|
           case k
           when :data_center, :flavor, :image, :kernel
             expect(arg[k].id.to_i).to eq(v.id)
@@ -102,7 +107,7 @@ describe Chef::Knife::LinodeServerCreate do
       subject.run
     end
 
-    it "should create a Chef::Knife::Bootstrap instance" do
+    it 'should create a Chef::Knife::Bootstrap instance' do
       expect(Chef::Knife::Bootstrap).to receive(:new)
       subject.run
     end
@@ -115,7 +120,7 @@ describe Chef::Knife::LinodeServerCreate do
       subject.run
     end
 
-    it "should set the bootstrap config correctly" do
+    it 'should set the bootstrap config correctly' do
       mock_config = {}
       allow(mock_bootstrap).to receive(:config).and_return(mock_config)
 
@@ -149,33 +154,33 @@ describe Chef::Knife::LinodeServerCreate do
 end
 
 def mock_ip(ip)
-  OpenStruct.new(:ip => ip)
+  OpenStruct.new(ip: ip)
 end
 
 def configure_chef(subject)
   connection = subject.connection
   server = {
-    :data_center   => connection.data_centers.first,
-    :flavor        => connection.flavors.first,
-    :image         => connection.images.first,
-    :kernel        => connection.kernels.first,
-    :type          => "ext3",
-    :payment_terms => 1,
-    :stack_script  => nil,
-    :name          => "test_node",
-    :password      => nil,
+    data_center: connection.data_centers.first,
+    flavor: connection.flavors.first,
+    image: connection.images.first,
+    kernel: connection.kernels.first,
+    type: 'ext3',
+    payment_terms: 1,
+    stack_script: nil,
+    name: 'test_node',
+    password: nil
   }
 
   chef_config = {
-    :ssh_user       => "root",
-    :run_list       => [],
-    :identity_file  => "~/.ssh/id_dsa",
-    :chef_node_name => "test_node",
-    :environment    => "_test",
+    ssh_user: 'root',
+    run_list: [],
+    identity_file: '~/.ssh/id_dsa',
+    chef_node_name: 'test_node',
+    environment: '_test'
   }
 
   server_params = {}
-  server.each do |k,v|
+  server.each do |k, v|
     case k
     when :data_center
       server_params[:datacenter] = v.id
@@ -187,7 +192,7 @@ def configure_chef(subject)
   end
 
   # setup the config before we call #run
-  server_params.each do |k,v|
+  server_params.each do |k, v|
     case k
     when :name
       Chef::Config[:knife][:linode_node_name] = v
@@ -206,10 +211,10 @@ def configure_chef(subject)
   end
 
   cli_config = subject.config.dup
-  chef_config.each do |k,v|
+  chef_config.each do |k, v|
     cli_config[k] = v
   end
   allow(subject).to receive(:config).and_return(cli_config)
-  #cli_config.merge(Chef::Config[:knife].dup)
+  # cli_config.merge(Chef::Config[:knife].dup)
   cli_config
 end

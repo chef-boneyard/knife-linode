@@ -23,13 +23,11 @@ require 'chef/knife/linode_base'
 class Chef
   class Knife
     class LinodeServerList < Chef::Knife
-
       include Knife::LinodeBase
 
-      banner "knife linode server list (options)"
+      banner 'knife linode server list (options)'
 
       def run
-
         $stdout.sync = true
 
         validate!
@@ -40,9 +38,9 @@ class Chef
           ui.color('IPs', :bold),
           ui.color('Status', :bold),
           ui.color('Backups', :bold),
-          ui.color('Datacenter', :bold),
+          ui.color('Datacenter', :bold)
         ]
-    
+
         dc_location = {}
 
         connection.data_centers.map { |dc| dc_location[dc.id] = dc.location }
@@ -50,21 +48,24 @@ class Chef
         connection.servers.each do |server|
           server_list << server.id.to_s
           server_list << server.name
-          server_list << server.ips.map { |x| x.ip }.join(",")
+          server_list << server.ips.map { |x| x.ip }.join(',')
           server_list << status_to_ui(server.status)
-          server_list << case connection.linode_list(server.id).body['DATA'][0]['BACKUPSENABLED']
+
+          server_data = connection.linode_list(server.id).body['DATA'][0]
+          backups_enabled = server_data['BACKUPSENABLED']
+          server_list << case backups_enabled
                          when 0
-                           ui.color("No", :red)
+                           ui.color('No', :red)
                          when 1
-                           ui.color("Yes", :green)
+                           ui.color('Yes', :green)
                          else
-                           ui.color("UNKNOWN", :yellow)
+                           ui.color('UNKNOWN', :yellow)
                          end
-          server_list << dc_location[connection.linode_list(server.id).body['DATA'][0]['DATACENTERID']]
+
+          server_list << dc_location[server_data['DATACENTERID']]
         end
 
         puts ui.list(server_list, :columns_across, 6)
-
       end
     end
   end

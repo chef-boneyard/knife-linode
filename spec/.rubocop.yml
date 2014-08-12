@@ -1,0 +1,11 @@
+Style/MethodLength:
+  Enabled: false
+
+Style/CyclomaticComplexity:
+  Enabled: false
+
+Style/LineLength:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false

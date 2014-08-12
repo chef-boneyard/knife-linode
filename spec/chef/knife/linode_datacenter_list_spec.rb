@@ -12,18 +12,18 @@ describe Chef::Knife::LinodeDatacenterList do
     allow(subject).to receive(:puts)
   end
 
-  describe "#run" do
-    it "should validate the Linode config keys exist" do
+  describe '#run' do
+    it 'should validate the Linode config keys exist' do
       expect(subject).to receive(:validate!)
       subject.run
     end
 
-    it "should output the column headers" do
+    it 'should output the column headers' do
       expect(subject).to receive(:puts).with(/^ID\s+Location\s*$/)
       subject.run
     end
 
-    it "should output the datacenter locations" do
+    it 'should output the datacenter locations' do
       expect(subject).to receive(:puts).with(/(?:Newark|Tokyo|Dallas)/)
       subject.run
     end

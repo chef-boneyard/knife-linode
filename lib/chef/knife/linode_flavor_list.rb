@@ -23,13 +23,11 @@ require 'chef/knife/linode_base'
 class Chef
   class Knife
     class LinodeFlavorList < Chef::Knife
-
       include Knife::LinodeBase
 
-      banner "knife linode flavor list (options)"
+      banner 'knife linode flavor list (options)'
 
       def run
-
         validate!
 
         server_list = [
@@ -37,19 +35,18 @@ class Chef
           ui.color('Name', :bold),
           ui.color('RAM', :bold),
           ui.color('Disk', :bold),
-          ui.color('Price', :bold),
+          ui.color('Price', :bold)
         ]
 
         connection.flavors.each do |flavor|
           server_list << flavor.id.to_s
           server_list << flavor.name
-          server_list << flavor.ram.to_s + " MB"
-          server_list << flavor.disk.to_s + " GB"
+          server_list << flavor.ram.to_s + ' MB'
+          server_list << flavor.disk.to_s + ' GB'
           server_list << flavor.price.to_s
         end
 
         puts ui.list(server_list, :columns_across, 5)
-
       end
     end
   end

@@ -12,18 +12,18 @@ describe Chef::Knife::LinodeFlavorList do
     allow(subject).to receive(:puts)
   end
 
-  describe "#run" do
-    it "should validate the Linode config keys exist" do
+  describe '#run' do
+    it 'should validate the Linode config keys exist' do
       expect(subject).to receive(:validate!)
       subject.run
     end
 
-    it "should output the column headers" do
+    it 'should output the column headers' do
       expect(subject).to receive(:puts).with(/^ID\s+Name\s+RAM\s+Disk\s+Price\s*$/)
       subject.run
     end
 
-    it "should output a list of the available Linode flavors" do
+    it 'should output a list of the available Linode flavors' do
       expect(subject).to receive(:puts).with(/\bLinode \d+\b/)
       subject.run
     end

@@ -1,3 +1,4 @@
+# rubocop:disable Style/Next
 #
 # Author:: Seth Chisamore (<schisamo@opscode.com>)
 # Author:: Lamont Granquist (<lamont@opscode.com>)
@@ -22,7 +23,6 @@ require 'chef/knife'
 class Chef
   class Knife
     module LinodeBase
-
       # :nodoc:
       # Would prefer to do this in a rational way, but can't be done b/c of
       # Mixlib::CLI's design :(
@@ -36,19 +36,19 @@ class Chef
           end
 
           option :linode_api_key,
-            :short => "-A KEY",
-            :long => "--linode-api-key KEY",
-            :description => "Your Linode API Key",
-            :proc => Proc.new { |key| Chef::Config[:knife][:linode_api_key] = key }
+                 short: '-A KEY',
+                 long: '--linode-api-key KEY',
+                 description: 'Your Linode API Key',
+                 proc: proc { |key| Chef::Config[:knife][:linode_api_key] = key }
 
         end
       end
 
       def connection
         @connection ||= begin
-          connection = Fog::Compute.new(
-            :provider => 'Linode',
-            :linode_api_key => Chef::Config[:knife][:linode_api_key]
+          Fog::Compute.new(
+            provider: 'Linode',
+            linode_api_key: Chef::Config[:knife][:linode_api_key]
           )
         end
       end
@@ -58,47 +58,41 @@ class Chef
         config[key] || Chef::Config[:knife][key]
       end
 
-      def msg_pair(label, value, color=:cyan)
-        if value && !value.empty?
-          puts "#{ui.color(label, color)}: #{value}"
-        end
+      def msg_pair(label, value, color = :cyan)
+        puts "#{ui.color(label, color)}: #{value}" if value && !value.empty?
       end
 
-      def validate!(keys=[:linode_api_key])
+      def validate!(keys = [:linode_api_key])
         errors = []
 
         keys.each do |k|
-          pretty_key = k.to_s.gsub(/_/, ' ').gsub(/\w+/){ |w| (w =~ /(api)/i) ? w.upcase  : w.capitalize }
+          pretty_key = k.to_s.gsub(/_/, ' ').gsub(/\w+/) { |w| (w =~ /(api)/i) ? w.upcase  : w.capitalize }
           if Chef::Config[:knife][k].nil?
             errors << "You did not provide a valid '#{pretty_key}' value."
           end
         end
 
-        if errors.each{|e| ui.error(e)}.any?
-          exit 1
-        end
+        exit 1 if errors.each { |e| ui.error(e) }.any?
       end
 
       def status_to_ui(status)
         case status
         when -2
-          ui.color("Boot Failed", :red)
+          ui.color('Boot Failed', :red)
         when -1
-          ui.color("Being Created", :yellow)
+          ui.color('Being Created', :yellow)
         when 0
-          ui.color("Brand New", :yellow)
+          ui.color('Brand New', :yellow)
         when 1
-          ui.color("Running", :green)
+          ui.color('Running', :green)
         when 2
-          ui.color("Powered Off", :red)
+          ui.color('Powered Off', :red)
         when 3
-          ui.color("Shutting Down", :red)
+          ui.color('Shutting Down', :red)
         else
           ui.color("UNKNOWN: #{server.status}", :yellow)
         end
       end
-
     end
   end
 end
-

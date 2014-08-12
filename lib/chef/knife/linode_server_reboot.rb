@@ -18,17 +18,15 @@
 #
 
 require 'chef/knife/linode_base'
- 
+
 class Chef
   class Knife
     class LinodeServerReboot < Chef::Knife
-
       include Knife::LinodeBase
 
-      banner "knife linode server reboot LINODE_ID (options)"
+      banner 'knife linode server reboot LINODE_ID (options)'
 
       def run
-
         validate!
 
         @name_args.each do |linode_id|
@@ -36,23 +34,22 @@ class Chef
           begin
             server = connection.servers.get(linode_id)
 
-            msg_pair("Linode ID", server.id.to_s)
-            msg_pair("Name", server.name)
-            msg_pair("IPs", server.ips.map { |x| x.ip }.join(",") )
-            msg_pair("Status", status_to_ui(server.status) )
+            msg_pair('Linode ID', server.id.to_s)
+            msg_pair('Name', server.name)
+            msg_pair('IPs', server.ips.map { |x| x.ip }.join(','))
+            msg_pair('Status', status_to_ui(server.status))
 
             puts "\n"
-            confirm("Do you really want to reboot this server")
+            confirm('Do you really want to reboot this server')
 
             connection.servers.get(linode_id).reboot
 
             ui.warn("Rebooted server #{linode_id}")
           rescue Fog::Compute::Linode::NotFound
             ui.error("Could not locate server '#{linode_id}'.")
-	        end
+          end
 
         end
-
       end
     end
   end
