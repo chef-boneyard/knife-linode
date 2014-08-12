@@ -1,6 +1,7 @@
 ## Knife Linode
 
 #### Please bare with me while I get this plugin cleaned up! -[jesseadams](https://github.com/jesseadams) 07/28/2014
+#### Update 08/11/2014: Lots of big changes just got merged in. Please test master and submit issues/pull requests as necessary. Thanks!
 
 ### Description
 
