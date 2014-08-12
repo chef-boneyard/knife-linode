@@ -9,22 +9,22 @@ describe Chef::Knife::LinodeDatacenterList do
   before :each do
     Chef::Knife::LinodeDatacenterList.load_deps
     Chef::Config[:knife][:linode_api_key] = api_key
-    subject.stub!(:puts)
+    allow(subject).to receive(:puts)
   end
 
   describe "#run" do
     it "should validate the Linode config keys exist" do
-      subject.should_receive(:validate!)
+      expect(subject).to receive(:validate!)
       subject.run
     end
 
     it "should output the column headers" do
-      subject.should_receive(:puts).with(/^ID\s+Location\s*$/)
+      expect(subject).to receive(:puts).with(/^ID\s+Location\s*$/)
       subject.run
     end
 
     it "should output the datacenter locations" do
-      subject.should_receive(:puts).with(/(?:Newark|Tokyo|Dallas)/)
+      expect(subject).to receive(:puts).with(/(?:Newark|Tokyo|Dallas)/)
       subject.run
     end
   end
