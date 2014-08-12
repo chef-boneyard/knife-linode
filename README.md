@@ -9,16 +9,19 @@ the ability to create, bootstrap, and manage Linode instances.
 
 In-depth usage instructions can be found on the [Chef Docs](http://docs.opscode.com/plugin_knife_linode.html).
 
+### Requirements
+
+* Chef 11.8.x or higher
+
 ### Installation
-
-Be sure you are running the latest version Chef. Versions earlier than 0.10.0
-don't support plugins:
-
-    gem install chef
 
 This plugin is distributed as a Ruby Gem. To install it, run:
 
     gem install knife-linode
+
+Or use bundler:
+
+    gem 'knife-linode', '~> 0.3'
 
 Depending on your system's configuration, you may need to run this command
 with root privileges.
@@ -39,8 +42,8 @@ others) you may want to read the values from environment variables:
 You also have the option of passing your Linode API Key into the individual
 knife subcommands using the `-A` (or `--linode-api-key`) command option
 
-    # provision a new Ubuntu 10.04 webserver
-    knife linode server create -r 'role[webserver]' --linode-image 65 --linode-datacenter 2 --linode-flavor 1 --linode-node-name YOUR_LINODE_NODE_NAME
+    # Provision a new 1 GB 64 bit Ubuntu 14.04 Linode in the Dallas, TX datacenter
+    knife linode server create -r 'role[webserver]' --linode-image 124 --linode-datacenter 2 --linode-flavor 1 --linode-node-name YOUR_LINODE_NODE_NAME
 
 Additionally the following options may be set in your `knife.rb`:
 
@@ -51,7 +54,6 @@ Additionally the following options may be set in your `knife.rb`:
 *   bootstrap_version
 *   distro
 *   template_file
-
 
 ## Sub Commands
 
@@ -114,7 +116,7 @@ Apache License, Version 2.0
 
 Original Author: Adam Jacob (<adam@opscode.com>)
 
-Copyright (c) 2009-2011 Opscode, Inc.
+Copyright (c) 2009-2014 Opscode, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not
 use this file except in compliance with the License. You may obtain a copy of
@@ -130,5 +132,5 @@ the License.
 
 ## Maintainers
 
-- Jesse R. Adams ([jesseadams](https://github.com/jesseadams))
+* Jesse R. Adams ([jesseadams](https://github.com/jesseadams))
 * You?
