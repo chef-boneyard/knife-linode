@@ -272,6 +272,8 @@ class Chef
         bootstrap.config[:host_key_verify] = config[:host_key_verify]
         bootstrap.config[:secret] = locate_config_value(:secret)
         bootstrap.config[:secret_file] = locate_config_value(:secret_file)
+        bootstrap.config[:private_ip] = server.ips.reject{ |ip| ip.public }.first.ip
+        bootstrap.config[:public_ip] = server.public_ip_address
         bootstrap
       end
 
