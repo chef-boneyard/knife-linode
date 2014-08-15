@@ -62,6 +62,7 @@ describe Chef::Knife::LinodeServerCreate do
         allow(ms).to receive(:id).and_return(42)
         allow(ms).to receive(:name).and_return("Test Linode")
         allow(ms).to receive(:status).and_return(1)
+        allow(ms).to receive(:public_ip_address)
       end
     }
 
