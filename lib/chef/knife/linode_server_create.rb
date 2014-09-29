@@ -158,6 +158,11 @@ class Chef
         :description => "A file containing the secret key to use to encrypt data bag item values",
         :proc => Proc.new { |sf| Chef::Config[:knife][:secret_file] = sf }
 
+      option :display_group,
+        :short => "-G GROUP",
+        :long => "--display-group GROUP",
+        :description => "Specify a display group for linode web portal"
+
       def tcp_test_ssh(hostname)
         Chef::Log.debug("testing ssh connection to #{hostname}")
         tcp_socket = TCPSocket.new(hostname, 22)
@@ -220,6 +225,8 @@ class Chef
                     :name => locate_config_value(:linode_node_name),
                     :password => locate_config_value(:ssh_password)
                  )
+
+        connection.linode_update(server.id, {:lpm_displaygroup => config[:display_group]}) if config[:display_group]
 
         fqdn = server.ips.select { |lip| !( lip.ip =~ /^192\.168\./ || lip.ip =~ /^10\./ || lip.ip =~ /^172\.(1[6-9]|2[0-9]|3[0-1])\./ ) }.first.ip
 
