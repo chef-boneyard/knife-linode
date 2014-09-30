@@ -50,7 +50,7 @@ class Chef
         :long => "--linode-image IMAGE",
         :description => "The image for the server",
         :proc => Proc.new { |i| Chef::Config[:knife][:linode_image] = i },
-        :default => 99 # Ubuntu 12.04 LTS
+        :default => 124 # Ubuntu 14.04 LTS
 
       option :linode_kernel,
         :short => "-k KERNEL",
