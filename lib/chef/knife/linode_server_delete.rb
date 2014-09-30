@@ -70,6 +70,7 @@ class Chef
             server = connection.servers.detect do |s|
               s.id.to_s == linode_id || s.name == linode_id
             end
+            raise Fog::Compute::Linode::NotFound.new unless server
             delete_id = server.id
 
             msg_pair("Linode ID", server.id.to_s)
