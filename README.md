@@ -1,9 +1,5 @@
 ## Knife Linode
 
-#### Please bare with me while I get this plugin cleaned up! -[jesseadams](https://github.com/jesseadams) 07/28/2014
-#### Update 08/11/2014: Lots of big changes just got merged in. Please test master and submit issues/pull requests as necessary. Thanks!
-#### Update 08/16/2014: Version 0.3.0 has been published. Please test and submit issues to GitHub. Thanks!
-
 ### Description
 
 This is the official Opscode Knife plugin for Linode. This plugin gives knife
