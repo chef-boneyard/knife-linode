@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_runtime_dependency "fog",  "~> 1.0"
-  s.add_runtime_dependency "chef", "~> 11.8"
+  s.add_runtime_dependency "chef", "~> 12.0"
 
   s.add_development_dependency "rspec",   "~> 3.0"
   s.add_development_dependency "rubocop",    "~> 0.24"
