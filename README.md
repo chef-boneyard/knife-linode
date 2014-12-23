@@ -10,6 +10,7 @@ In-depth usage instructions can be found on the [Chef Docs](http://docs.opscode.
 ### Requirements
 
 * Chef 11.8.x or higher
+* Ruby 2.0.x or higher 
 
 ### Installation
 

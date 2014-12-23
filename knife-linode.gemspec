@@ -5,8 +5,8 @@ require "knife-linode/version"
 Gem::Specification.new do |s|
   s.name        = "knife-linode"
   s.version     = Knife::Linode::VERSION
-  s.authors     = ['Adam Jacob', 'Seth Chisamore', 'Lamont Granquist']
-  s.email       = ['adam@opscode.com', 'schisamo@opscode.com', 'lamont@opscode.com']
+  s.authors     = ['Adam Jacob', 'Seth Chisamore', 'Lamont Granquist', 'Jesse R. Adams']
+  s.email       = ['adam@opscode.com', 'schisamo@opscode.com', 'lamont@opscode.com', 'jesse@techno-geeks.org']
   s.homepage    = 'http://wiki.opscode.com/display/chef'
   s.summary     = "Linode Support for Chef's Knife Command"
   s.description = s.summary
@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_runtime_dependency "fog",  "~> 1.0"
-  s.add_runtime_dependency "chef", "~> 11.8"
+  s.add_runtime_dependency "chef", ">= 11.8"
 
   s.add_development_dependency "rspec",   "~> 3.0"
   s.add_development_dependency "rubocop",    "~> 0.24"
