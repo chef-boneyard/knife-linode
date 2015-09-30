@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Knife::Linode::VERSION
   s.authors     = ['Adam Jacob', 'Seth Chisamore', 'Lamont Granquist', 'Jesse R. Adams']
   s.email       = ['adam@opscode.com', 'schisamo@opscode.com', 'lamont@opscode.com', 'jesse@techno-geeks.org']
-  s.homepage    = 'http://wiki.opscode.com/display/chef'
+  s.homepage    = 'https://github.com/chef/knife-linode'
   s.summary     = "Linode Support for Chef's Knife Command"
   s.description = s.summary
   s.extra_rdoc_files = ['README.md', 'LICENSE']
