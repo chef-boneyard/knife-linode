@@ -13,14 +13,23 @@ In-depth usage instructions can be found on the [Chef Docs](http://docs.opscode.
 * Ruby 2.0.x or higher 
 
 ### Installation
+If you're using [ChefDK](https://downloads.chef.io/chef-dk/), simply install the Gem:
 
-This plugin is distributed as a Ruby Gem. To install it, run:
+```bash
+chef gem install knife-linode
+```
 
-    gem install knife-linode
+If you're using bundler, simply add Chef and Knife Linode to your `Gemfile`:
 
-Or use bundler:
+```ruby
+gem 'knife-linode', '~> 0.3'
+```
 
-    gem 'knife-linode', '~> 0.3'
+If you are not using bundler, you can install the gem manually from Rubygems:
+
+```bash
+gem install knife-linode
+```
 
 Depending on your system's configuration, you may need to run this command
 with root privileges.
