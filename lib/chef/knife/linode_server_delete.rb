@@ -89,7 +89,7 @@ class Chef
               if config[:chef_node_name]
                 thing_to_delete = config[:chef_node_name]
               else
-                thing_to_delete = server.name
+                thing_to_delete = delete_id
               end
               destroy_item(Chef::Node, thing_to_delete, "node")
               destroy_item(Chef::ApiClient, thing_to_delete, "client")
