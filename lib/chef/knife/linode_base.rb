@@ -70,7 +70,7 @@ class Chef
         keys.each do |k|
           pretty_key = k.to_s.tr("_", " ").gsub(/\w+/) { |w| (w =~ /(api)/i) ? w.upcase : w.capitalize }
           if Chef::Config[:knife][k].nil?
-            errors << "You did not provide a valid '#{pretty_key}' value."
+            errors << "You did not provide a valid '#{pretty_key}' value in your knife as #{k}."
           end
         end
 
