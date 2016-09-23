@@ -1,5 +1,7 @@
 # Knife Linode
 
+[![Gem Version](https://badge.fury.io/rb/knife-linode.svg)](https://rubygems.org/gems/knife-linode) [![Build Status](https://travis-ci.org/chef/knife-linode.svg?branch=master)](https://travis-ci.org/chef/knife-linode)
+
 ## Description
 
 This is the official Chef Knife plugin for Linode. This plugin gives knife the ability to create, bootstrap, and manage Linode instances.
@@ -11,16 +13,22 @@ This is the official Chef Knife plugin for Linode. This plugin gives knife the a
 
 ## Installation
 
-This plugin is distributed as a Ruby Gem. To install it, run:
+If you're using [ChefDK](https://downloads.chef.io/chef-dk/), simply install the Gem:
 
-```
-gem install knife-linode
+```bash
+$ chef gem install knife-linode
 ```
 
-Or use bundler:
+If you're using bundler, simply add Chef and Knife Linode to your `Gemfile`:
 
-```
+```ruby
 gem 'knife-linode'
+```
+
+If you are not using bundler, you can install the gem manually from Rubygems:
+
+```bash
+$ gem install knife-linode
 ```
 
 Depending on your system's configuration, you may need to run this command with root privileges.
@@ -29,13 +37,13 @@ Depending on your system's configuration, you may need to run this command with 
 
 In order to communicate with the Linode API you will have to tell Knife about your Linode API Key. The easiest way to accomplish this is to create some entries in your `knife.rb` file:
 
-```
+```ruby
 knife[:linode_api_key] = "Your Linode API Key"
 ```
 
 If your knife.rb file will be checked into a SCM system (ie readable by others) you may want to read the values from environment variables:
 
-```
+```ruby
 knife[:linode_api_key] = "#{ENV['LINODE_API_KEY']}"
 ```
 
@@ -56,7 +64,7 @@ Additionally the following options may be set in your `knife.rb`:
 - distro
 - template_file
 
-# Sub Commands
+## Knife Sub Commands
 
 This plugin provides the following Knife subcommands. Specific command options can be found by invoking the subcommand with a `--help` flag
 
@@ -65,50 +73,55 @@ This plugin provides the following Knife subcommands. Specific command options c
 Provisions a new server in Linode and then perform a Chef bootstrap (using the SSH protocol). The goal of the bootstrap is to get Chef installed on the target system so it can run Chef Client with a Chef Server. The main assumption is a baseline OS installation exists (provided by the provisioning). It is primarily intended for Chef Client systems that talk to a Chef server. By default the server is bootstrapped using the [ubuntu10.04-gems](https://github.com/opscode/chef/blob/master/chef/lib/chef/k
 nife/bootstrap/ubuntu10.04-gems.erb) template. This can be overridden using the `-d` or `--template-file` command options.
 
-## knife linode server delete
+### knife linode server delete
 
 Deletes an existing server in the currently configured Linode account. **PLEASE NOTE** - this does not delete the associated node and client objects from the Chef server.
 
-## knife linode server list
+### knife linode server list
 
 Outputs a list of all servers in the currently configured Linode account. **PLEASE NOTE** - this shows all instances associated with the account, some of which may not be currently managed by the Chef server.
 
-## knife linode server reboot
+### knife linode server reboot
 
 Reboots an existing server in the currently configured Linode account.
 
-## knife linode datacenter list
+### knife linode datacenter list
 
 View a list of available data centers, listed by data center ID and location.
 
-## knife linode flavor list
+### knife linode flavor list
 
 View a list of servers from the Linode environment, listed by ID, name, RAM, disk, and Price.
 
-## knife linode image list
+### knife linode image list
 
 View a list of images from the Linode environment, listed by ID, name, bits, and image size.
 
-## knife linode kernel list
+### knife linode kernel list
 
 View a a list of available kernels, listed by ID and name.
 
-## knife linode stackscript list
+### knife linode stackscript list
 
 View a list of Linode StackScripts that are currently being used.
 
-# License
+## License and Authors
 
-Apache License, Version 2.0
+- Author:: Adam Jacob ([adam@chef.io](mailto:adam@chef.io))
+- Author:: Jesse Adams ([jesse@techno-geeks.org](mailto:jesse@techno-geeks.org))
 
-Original Author: Adam Jacob ([adam@chef.io](mailto:adam@chef.io))
+```text
+Copyright 2009-2016 Chef Software, Inc.
 
-Copyright (c) 2009-2016 Chef Software, Inc.
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
 
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 ```
-http://www.apache.org/licenses/LICENSE-2.0
-```
-
-Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
