@@ -9,8 +9,8 @@ In-depth usage instructions can be found on the [Chef Docs](http://docs.opscode.
 
 ### Requirements
 
-* Chef 11.8.x or higher
-* Ruby 2.0.x or higher 
+* Chef 12.0 higher
+* Ruby 2.2.2 or higher 
 
 ### Installation
 
@@ -20,7 +20,7 @@ This plugin is distributed as a Ruby Gem. To install it, run:
 
 Or use bundler:
 
-    gem 'knife-linode', '~> 0.3'
+    gem 'knife-linode'
 
 Depending on your system's configuration, you may need to run this command
 with root privileges.
