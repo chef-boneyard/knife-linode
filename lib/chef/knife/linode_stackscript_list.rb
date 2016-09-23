@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-require 'chef/knife/linode_base'
+require "chef/knife/linode_base"
 
 class Chef
   class Knife
@@ -29,7 +29,6 @@ class Chef
       banner "knife linode stackscript list (options)"
 
       def run
-
         validate!
 
         server_list = [
@@ -44,7 +43,6 @@ class Chef
         end
 
 #        puts ui.list(server_list, :columns_across, 2)
-
       end
     end
   end

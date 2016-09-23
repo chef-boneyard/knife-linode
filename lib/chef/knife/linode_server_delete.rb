@@ -17,11 +17,11 @@
 # limitations under the License.
 #
 
-require 'chef/knife/linode_base'
+require "chef/knife/linode_base"
 
 # These two are needed for the '--purge' deletion case
-require 'chef/node'
-require 'chef/api_client'
+require "chef/node"
+require "chef/api_client"
 
 class Chef
   class Knife
@@ -61,7 +61,6 @@ class Chef
       end
 
       def run
-
         validate!
 
         @name_args.each do |linode_id|
@@ -101,7 +100,6 @@ class Chef
           end
 
         end
-
       end
     end
   end

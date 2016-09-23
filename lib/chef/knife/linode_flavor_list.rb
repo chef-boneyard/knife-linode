@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-require 'chef/knife/linode_base'
+require "chef/knife/linode_base"
 
 class Chef
   class Knife
@@ -29,15 +29,14 @@ class Chef
       banner "knife linode flavor list (options)"
 
       def run
-
         validate!
 
         server_list = [
-          ui.color('ID', :bold),
-          ui.color('Name', :bold),
-          ui.color('RAM', :bold),
-          ui.color('Disk', :bold),
-          ui.color('Price', :bold),
+          ui.color("ID", :bold),
+          ui.color("Name", :bold),
+          ui.color("RAM", :bold),
+          ui.color("Disk", :bold),
+          ui.color("Price", :bold),
         ]
 
         connection.flavors.each do |flavor|
@@ -49,7 +48,6 @@ class Chef
         end
 
         puts ui.list(server_list, :columns_across, 5)
-
       end
     end
   end

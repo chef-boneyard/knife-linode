@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-require 'chef/knife/linode_base'
+require "chef/knife/linode_base"
 
 class Chef
   class Knife
@@ -29,12 +29,11 @@ class Chef
       banner "knife linode kernel list (options)"
 
       def run
-
         validate!
 
         server_list = [
-          ui.color('ID', :bold),
-          ui.color('Name', :bold),
+          ui.color("ID", :bold),
+          ui.color("Name", :bold),
         ]
 
         connection.kernels.each do |kernel|
@@ -43,7 +42,6 @@ class Chef
         end
 
         puts ui.list(server_list, :columns_across, 2)
-
       end
     end
   end

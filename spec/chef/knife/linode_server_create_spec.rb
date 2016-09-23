@@ -1,16 +1,18 @@
-require 'spec_helper'
-require 'linode_server_create'
+require "spec_helper"
+require "linode_server_create"
 
 class MockSocket < BasicSocket
   def initialize; end
+
   def gets; end
+
   def close; end
 end
 
 describe Chef::Knife::LinodeServerCreate do
   subject { Chef::Knife::LinodeServerCreate.new }
 
-  let(:api_key)     { 'FAKE_API_KEY' }
+  let(:api_key)     { "FAKE_API_KEY" }
   let(:mock_socket) { MockSocket.new }
 
   before :each do
@@ -48,15 +50,15 @@ describe Chef::Knife::LinodeServerCreate do
   end
 
   describe "#run" do
-    let(:mock_bootstrap) {
+    let(:mock_bootstrap) do
       double("Chef::Knife::Bootstrap").tap do |mb|
         allow(mb).to receive(:run)
         allow(mb).to receive(:name_args=)
         allow(mb).to receive(:config).and_return({})
       end
-    }
+    end
 
-    let(:mock_server) {
+    let(:mock_server) do
       double("Fog::Compute::Linode::Server").tap do |ms|
         allow(ms).to receive(:ips).and_return([mock_ip("1.2.3.4")])
         allow(ms).to receive(:id).and_return(42)
@@ -64,13 +66,13 @@ describe Chef::Knife::LinodeServerCreate do
         allow(ms).to receive(:status).and_return(1)
         allow(ms).to receive(:public_ip_address)
       end
-    }
+    end
 
-    let(:mock_servers) {
+    let(:mock_servers) do
       double("Fog::Collection").tap do |ms|
         allow(subject.connection).to receive(:servers).and_return(ms)
       end
-    }
+    end
 
     before :each do
       allow(Chef::Knife::Bootstrap).to receive(:new).and_return(mock_bootstrap)
@@ -85,12 +87,12 @@ describe Chef::Knife::LinodeServerCreate do
     end
 
     it "should call #create on the servers collection with the correct params" do
-      skip 'fails - arg variable does not exist'
+      skip "fails - arg variable does not exist"
 
       configure_chef(subject)
 
       expect(mock_servers).to receive(:create) { |server|
-        server.each do |k,v|
+        server.each do |k, v|
           case k
           when :data_center, :flavor, :image, :kernel
             expect(arg[k].id.to_i).to eq(v.id)
@@ -109,7 +111,7 @@ describe Chef::Knife::LinodeServerCreate do
     end
 
     it "should set the bootstrap name_args to the Linode's public IP" do
-      ips = %w( 1.2.3.4 192.168.1.1 ).map { |ip| mock_ip(ip) }
+      ips = %w{ 1.2.3.4 192.168.1.1 }.map { |ip| mock_ip(ip) }
       allow(mock_server).to receive(:ips).and_return(ips)
       expect(mock_bootstrap).to receive(:name_args=).with([ips.first.ip])
 
@@ -176,7 +178,7 @@ def configure_chef(subject)
   }
 
   server_params = {}
-  server.each do |k,v|
+  server.each do |k, v|
     case k
     when :data_center
       server_params[:datacenter] = v.id
@@ -188,7 +190,7 @@ def configure_chef(subject)
   end
 
   # setup the config before we call #run
-  server_params.each do |k,v|
+  server_params.each do |k, v|
     case k
     when :name
       Chef::Config[:knife][:linode_node_name] = v
@@ -207,7 +209,7 @@ def configure_chef(subject)
   end
 
   cli_config = subject.config.dup
-  chef_config.each do |k,v|
+  chef_config.each do |k, v|
     cli_config[k] = v
   end
   allow(subject).to receive(:config).and_return(cli_config)

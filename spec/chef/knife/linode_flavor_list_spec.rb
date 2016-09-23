@@ -1,10 +1,10 @@
-require 'spec_helper'
-require 'linode_flavor_list'
+require "spec_helper"
+require "linode_flavor_list"
 
 describe Chef::Knife::LinodeFlavorList do
   subject { Chef::Knife::LinodeFlavorList.new }
 
-  let(:api_key) { 'FAKE_API_KEY' }
+  let(:api_key) { "FAKE_API_KEY" }
 
   before :each do
     Chef::Knife::LinodeFlavorList.load_deps
