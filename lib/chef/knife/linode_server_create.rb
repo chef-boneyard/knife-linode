@@ -69,8 +69,7 @@ class Chef
       option :linode_node_name,
         :short => "-L NAME",
         :long => "--linode-node-name NAME",
-        :description => "The Linode node name for your new node",
-        :required => true
+        :description => "The Linode node name for your new node"
 
       option :chef_node_name,
         :short => "-N NAME",
@@ -201,6 +200,8 @@ class Chef
         $stdout.sync = true
 
         validate!
+
+        raise "You must provide linode_node_name via the CLI or knife.rb config. See help for details" if locate_config_value(:linode_node_name).nil?
 
         datacenter_id = locate_config_value(:linode_datacenter).to_i
         datacenter = connection.data_centers.select { |dc| dc.id == datacenter_id }.first
