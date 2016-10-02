@@ -13,27 +13,15 @@ This is the official Chef Knife plugin for Linode. This plugin gives knife the a
 
 ## Installation
 
-If you're using [ChefDK](https://downloads.chef.io/chef-dk/), simply install the Gem:
+Using [ChefDK](https://downloads.chef.io/chef-dk/), simply install the Gem:
 
 ```bash
 $ chef gem install knife-linode
 ```
 
-If you're using bundler, simply add Chef and Knife Linode to your `Gemfile`:
-
-```ruby
-gem 'knife-linode'
-```
-
-If you are not using bundler, you can install the gem manually from Rubygems:
-
-```bash
-$ gem install knife-linode
-```
-
-Depending on your system's configuration, you may need to run this command with root privileges.
-
 ## Configuration
+
+### knife.rb
 
 In order to communicate with the Linode API you will have to tell Knife about your Linode API Key. The easiest way to accomplish this is to create some entries in your `knife.rb` file:
 
@@ -68,7 +56,7 @@ Additionally the following options may be set in your `knife.rb`:
 
 This plugin provides the following Knife subcommands. Specific command options can be found by invoking the subcommand with a `--help` flag
 
-## knife linode server create
+### knife linode server create
 
 Provisions a new server in Linode and then perform a Chef bootstrap (using the SSH protocol). The goal of the bootstrap is to get Chef installed on the target system so it can run Chef Client with a Chef Server. The main assumption is a baseline OS installation exists (provided by the provisioning). It is primarily intended for Chef Client systems that talk to a Chef server. By default the server is bootstrapped using the [ubuntu10.04-gems](https://github.com/opscode/chef/blob/master/chef/lib/chef/k
 nife/bootstrap/ubuntu10.04-gems.erb) template. This can be overridden using the `-d` or `--template-file` command options.
@@ -104,6 +92,10 @@ View a a list of available kernels, listed by ID and name.
 ### knife linode stackscript list
 
 View a list of Linode StackScripts that are currently being used.
+
+## Contributing
+
+For information on contributing to this project see <https://github.com/chef/chef/blob/master/CONTRIBUTING.md>
 
 ## License and Authors
 
