@@ -7,5 +7,4 @@ rvm:
 branches:
   only:
   - master
-
-  - bundle exec rake
+script: bundle exec rake
