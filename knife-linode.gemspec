@@ -23,8 +23,4 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency "fog",  "~> 1.0"
   s.add_runtime_dependency "chef", ">= 12.0"
-
-  s.add_development_dependency "rspec", "~> 3.0"
-  s.add_development_dependency "chefstyle"
-  s.add_development_dependency "rake", "~> 11.0"
 end
