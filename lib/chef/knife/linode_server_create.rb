@@ -32,6 +32,8 @@ class Chef
          require 'chef/json_compat'
          require 'chef/knife/bootstrap'
          Chef::Knife::Bootstrap.load_deps
+         # try to load solo bootstrap functionality if we can
+         Chef::Knife::SoloBootstrap.load_deps if defined? Chef::Knife::SoloBootstrap
        end
 
       banner "knife linode server create (options)"
@@ -112,6 +114,11 @@ class Chef
         :description => "Bootstrap a distro using a template",
         :proc => Proc.new { |d| Chef::Config[:knife][:distro] = d },
         :default => "chef-full"
+
+      option :solo,
+        :long => '--[no-]solo',
+        :description => 'Do a chef-solo bootstrap on the linode using knife-solo',
+        :proc => proc { |s| Chef::Config[:knife][:solo] = s }
 
       option :template_file,
         :long => "--template-file TEMPLATE",
@@ -213,6 +220,15 @@ class Chef
         # FIXME: tweakable stack_script
         # FIXME: tweakable payment terms
         # FIXME: tweakable disk type
+        
+        if solo_bootstrap? && !defined?(Chef::Knife::SoloBootstrap)
+          ui.error [
+            'Knife plugin knife-solo was not found.',
+            'Please add the knife-solo gem to your Gemfile or',
+            'install it manually with `gem install knife-solo`.'
+          ].join(' ')
+          exit 1
+        end
 
         server = connection.servers.create(
                     :data_center => datacenter,
@@ -261,8 +277,22 @@ class Chef
         bootstrap_for_node(server,fqdn).run
       end
 
+      # convenience to correctly choose solo or normal server bootstrap
+      def bootstrap_class
+        if solo_bootstrap?
+          Chef::Knife::SoloBootstrap
+        else
+          Chef::Knife::Bootstrap
+        end
+      end
+
+      # check if bootstrapping in solo mode
+      def solo_bootstrap?
+        config[:solo] || (config[:solo].nil? && Chef::Config[:knife][:solo])
+      end
+
       def bootstrap_for_node(server,fqdn)
-        bootstrap = Chef::Knife::Bootstrap.new
+        bootstrap = bootstrap_class.new
         bootstrap.name_args = [fqdn]
         bootstrap.config[:run_list] = config[:run_list]
         bootstrap.config[:ssh_user] = config[:ssh_user]
