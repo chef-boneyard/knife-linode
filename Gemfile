@@ -7,5 +7,5 @@ group :development do
   gem "pry"
   gem "rspec", "~> 3.0"
   gem "chefstyle"
-  gem "rake", "~> 11.0"
+  gem "rake"
 end
