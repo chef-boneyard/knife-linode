@@ -1,8 +1,8 @@
 
-# Author:: Adam Jacob (<adam@opscode.com>)
-# Author:: Seth Chisamore (<schisamo@opscode.com>)
-# Author:: Lamont Granquist (<lamont@opscode.com>)
-# Copyright:: Copyright (c) 2010-2011 Opscode, Inc.
+# Author:: Adam Jacob (<adam@chef.io>)
+# Author:: Seth Chisamore (<schisamo@chef.io>)
+# Author:: Lamont Granquist (<lamont@chef.io>)
+# Copyright:: Copyright (c) 2010-2016 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-require 'chef/knife/linode_base'
+require "chef/knife/linode_base"
 
 class Chef
   class Knife
@@ -26,13 +26,13 @@ class Chef
 
       include Knife::LinodeBase
 
-       deps do
-         require 'fog'
-         require 'readline'
-         require 'chef/json_compat'
-         require 'chef/knife/bootstrap'
-         Chef::Knife::Bootstrap.load_deps
-       end
+      deps do
+        require "fog"
+        require "readline"
+        require "chef/json_compat"
+        require "chef/knife/bootstrap"
+        Chef::Knife::Bootstrap.load_deps
+      end
 
       banner "knife linode server create (options)"
 
@@ -83,7 +83,7 @@ class Chef
         :default => "root"
 
       chars = ("a".."z").to_a + ("1".."9").to_a + ("A".."Z").to_a
-      @@defpass = Array.new(20, '').collect{chars[rand(chars.size)]}.push('A').push('a').join
+      @@defpass = Array.new(20, "").collect { chars[rand(chars.size)] }.push("A").push("a").join
 
       option :ssh_password,
         :short => "-P PASSWORD",
@@ -138,13 +138,13 @@ class Chef
         :boolean => true,
         :default => true
 
-      Chef::Config[:knife][:hints] ||= {"linode" => {}}
+      Chef::Config[:knife][:hints] ||= { "linode" => {} }
       option :hint,
         :long => "--hint HINT_NAME[=HINT_FILE]",
-        :description => "Specify Ohai Hint to be set on the bootstrap target.  Use multiple --hint options to specify multiple hints.",
+        :description => "Specify Ohai Hint to be set on the bootstrap target. Use multiple --hint options to specify multiple hints.",
         :proc => Proc.new { |h|
-           name, path = h.split("=")
-           Chef::Config[:knife][:hints][name] = path ? JSON.parse(::File.read(path)) : Hash.new
+          name, path = h.split("=")
+          Chef::Config[:knife][:hints][name] = path ? JSON.parse(::File.read(path)) : Hash.new
         }
 
       option :secret,
@@ -201,6 +201,8 @@ class Chef
 
         validate!
 
+        raise "You must provide linode_node_name via the CLI or knife.rb config. See help for details" if locate_config_value(:linode_node_name).nil?
+
         datacenter_id = locate_config_value(:linode_datacenter).to_i
         datacenter = connection.data_centers.select { |dc| dc.id == datacenter_id }.first
 
@@ -226,7 +228,7 @@ class Chef
                     :password => locate_config_value(:ssh_password)
                  )
 
-        connection.linode_update(server.id, {:lpm_displaygroup => config[:display_group]}) if config[:display_group]
+        connection.linode_update(server.id, { :lpm_displaygroup => config[:display_group] }) if config[:display_group]
 
         fqdn = server.ips.select { |lip| !( lip.ip =~ /^192\.168\./ || lip.ip =~ /^10\./ || lip.ip =~ /^172\.(1[6-9]|2[0-9]|3[0-1])\./ ) }.first.ip
 
@@ -243,25 +245,25 @@ class Chef
 
         print "\n#{ui.color("Waiting for sshd", :magenta)}"
 
-        print(".") until tcp_test_ssh(fqdn) {
+        print(".") until tcp_test_ssh(fqdn) do
           sleep @initial_sleep_delay ||= 10
           puts("done")
-        }
+        end
 
-        Chef::Config[:knife][:hints]['linode'] ||= Hash.new
-        Chef::Config[:knife][:hints]['linode'].merge!({
-            'server_id' => server.id.to_s,
-            'datacenter_id' => locate_config_value(:linode_datacenter),
-            'flavor_id' => locate_config_value(:linode_flavor),
-            'image_id' => locate_config_value(:linode_image),
-            'kernel_id' => locate_config_value(:linode_kernel),
-            'ip_addresses' => server.ips.map(&:ip)})
+        Chef::Config[:knife][:hints]["linode"] ||= Hash.new
+        Chef::Config[:knife][:hints]["linode"].merge!({
+            "server_id" => server.id.to_s,
+            "datacenter_id" => locate_config_value(:linode_datacenter),
+            "flavor_id" => locate_config_value(:linode_flavor),
+            "image_id" => locate_config_value(:linode_image),
+            "kernel_id" => locate_config_value(:linode_kernel),
+            "ip_addresses" => server.ips.map(&:ip) })
 
         msg_pair("JSON Attributes", config[:json_attributes]) unless !config[:json_attributes] || config[:json_attributes].empty?
-        bootstrap_for_node(server,fqdn).run
+        bootstrap_for_node(server, fqdn).run
       end
 
-      def bootstrap_for_node(server,fqdn)
+      def bootstrap_for_node(server, fqdn)
         bootstrap = Chef::Knife::Bootstrap.new
         bootstrap.name_args = [fqdn]
         bootstrap.config[:run_list] = config[:run_list]
@@ -273,13 +275,13 @@ class Chef
         bootstrap.config[:bootstrap_version] = locate_config_value(:bootstrap_version)
         bootstrap.config[:first_boot_attributes] = locate_config_value(:json_attributes) || {}
         bootstrap.config[:distro] = locate_config_value(:distro)
-        bootstrap.config[:use_sudo] = true unless config[:ssh_user] == 'root'
+        bootstrap.config[:use_sudo] = true unless config[:ssh_user] == "root"
         bootstrap.config[:template_file] = locate_config_value(:template_file)
         bootstrap.config[:environment] = config[:environment]
         bootstrap.config[:host_key_verify] = config[:host_key_verify]
         bootstrap.config[:secret] = locate_config_value(:secret)
         bootstrap.config[:secret_file] = locate_config_value(:secret_file)
-        bootstrap.config[:private_ip] = server.ips.reject{ |ip| ip.public }.first.ip
+        bootstrap.config[:private_ip] = server.ips.reject { |ip| ip.public }.first.ip
         bootstrap.config[:public_ip] = server.public_ip_address
         bootstrap
       end

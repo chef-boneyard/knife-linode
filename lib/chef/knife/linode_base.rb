@@ -1,7 +1,7 @@
 #
-# Author:: Seth Chisamore (<schisamo@opscode.com>)
-# Author:: Lamont Granquist (<lamont@opscode.com>)
-# Copyright:: Copyright (c) 2011 Opscode, Inc.
+# Author:: Seth Chisamore (<schisamo@chef.io>)
+# Author:: Lamont Granquist (<lamont@chef.io>)
+# Copyright:: Copyright (c) 2011-2016 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-require 'chef/knife'
+require "chef/knife"
 
 class Chef
   class Knife
@@ -30,9 +30,9 @@ class Chef
         includer.class_eval do
 
           deps do
-            require 'fog'
-            require 'readline'
-            require 'chef/json_compat'
+            require "fog"
+            require "readline"
+            require "chef/json_compat"
           end
 
           option :linode_api_key,
@@ -47,7 +47,7 @@ class Chef
       def connection
         @connection ||= begin
           connection = Fog::Compute.new(
-            :provider => 'Linode',
+            :provider => "Linode",
             :linode_api_key => Chef::Config[:knife][:linode_api_key]
           )
         end
@@ -58,23 +58,23 @@ class Chef
         config[key] || Chef::Config[:knife][key]
       end
 
-      def msg_pair(label, value, color=:cyan)
+      def msg_pair(label, value, color = :cyan)
         if value && !value.empty?
           puts "#{ui.color(label, color)}: #{value}"
         end
       end
 
-      def validate!(keys=[:linode_api_key])
+      def validate!(keys = [:linode_api_key])
         errors = []
 
         keys.each do |k|
-          pretty_key = k.to_s.gsub(/_/, ' ').gsub(/\w+/){ |w| (w =~ /(api)/i) ? w.upcase  : w.capitalize }
+          pretty_key = k.to_s.tr("_", " ").gsub(/\w+/) { |w| (w =~ /(api)/i) ? w.upcase : w.capitalize }
           if Chef::Config[:knife][k].nil?
-            errors << "You did not provide a valid '#{pretty_key}' value."
+            errors << "You did not provide a valid '#{pretty_key}' value in your knife as #{k}."
           end
         end
 
-        if errors.each{|e| ui.error(e)}.any?
+        if errors.each { |e| ui.error(e) }.any?
           exit 1
         end
       end
@@ -101,4 +101,3 @@ class Chef
     end
   end
 end
-

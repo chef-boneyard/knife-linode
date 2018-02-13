@@ -1,7 +1,7 @@
-# Author:: Adam Jacob (<adam@opscode.com>)
-# Author:: Seth Chisamore (<schisamo@opscode.com>)
-# Author:: Lamont Granquist (<lamont@opscode.com>)
-# Copyright:: Copyright (c) 2010-2011 Opscode, Inc.
+# Author:: Adam Jacob (<adam@chef.io>)
+# Author:: Seth Chisamore (<schisamo@chef.io>)
+# Author:: Lamont Granquist (<lamont@chef.io>)
+# Copyright:: Copyright (c) 2010-2016 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,8 +17,8 @@
 # limitations under the License.
 #
 
-require 'chef/knife/linode_base'
- 
+require "chef/knife/linode_base"
+
 class Chef
   class Knife
     class LinodeServerReboot < Chef::Knife
@@ -28,7 +28,6 @@ class Chef
       banner "knife linode server reboot LINODE_ID (options)"
 
       def run
-
         validate!
 
         @name_args.each do |linode_id|
@@ -49,10 +48,9 @@ class Chef
             ui.warn("Rebooted server #{linode_id}")
           rescue Fog::Compute::Linode::NotFound
             ui.error("Could not locate server '#{linode_id}'.")
-	        end
+          end
 
         end
-
       end
     end
   end

@@ -1,8 +1,8 @@
 
-# Author:: Adam Jacob (<adam@opscode.com>)
-# Author:: Seth Chisamore (<schisamo@opscode.com>)
-# Author:: Lamont Granquist (<lamont@opscode.com>)
-# Copyright:: Copyright (c) 2010-2011 Opscode, Inc.
+# Author:: Adam Jacob (<adam@chef.io>)
+# Author:: Seth Chisamore (<schisamo@chef.io>)
+# Author:: Lamont Granquist (<lamont@chef.io>)
+# Copyright:: Copyright (c) 2010-2016 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-require 'chef/knife/linode_base'
+require "chef/knife/linode_base"
 
 class Chef
   class Knife
@@ -29,14 +29,13 @@ class Chef
       banner "knife linode image list (options)"
 
       def run
-
         validate!
 
         server_list = [
-          ui.color('ID', :bold),
-          ui.color('Name', :bold),
-          ui.color('Bits', :bold),
-          ui.color('Image Size', :bold),
+          ui.color("ID", :bold),
+          ui.color("Name", :bold),
+          ui.color("Bits", :bold),
+          ui.color("Image Size", :bold),
         ]
 
         connection.images.each do |image|
@@ -47,7 +46,6 @@ class Chef
         end
 
         puts ui.list(server_list, :columns_across, 4)
-
       end
     end
   end

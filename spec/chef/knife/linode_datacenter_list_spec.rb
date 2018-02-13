@@ -1,10 +1,10 @@
-require 'spec_helper'
-require 'linode_datacenter_list'
+require "spec_helper"
+require "linode_datacenter_list"
 
 describe Chef::Knife::LinodeDatacenterList do
   subject { Chef::Knife::LinodeDatacenterList.new }
 
-  let(:api_key) { 'FAKE_API_KEY' }
+  let(:api_key) { "FAKE_API_KEY" }
 
   before :each do
     Chef::Knife::LinodeDatacenterList.load_deps
