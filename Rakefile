@@ -4,7 +4,7 @@ begin
 
   desc "Run all specs in spec directory"
   RSpec::Core::RakeTask.new(:spec) do |t|
-    t.pattern = "spec/unit/**/*_spec.rb"
+    t.pattern = "spec/**/*_spec.rb"
   end
 
 rescue LoadError
