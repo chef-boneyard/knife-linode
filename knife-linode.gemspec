@@ -5,11 +5,9 @@ require "knife-linode/version"
 Gem::Specification.new do |s|
   s.name        = "knife-linode"
   s.version     = Knife::Linode::VERSION
-  s.platform    = Gem::Platform::RUBY
   s.authors     = ["Adam Jacob", "Seth Chisamore", "Lamont Granquist", "Jesse R. Adams"]
   s.email       = ["adam@chef.io", "schisamo@chef.io", "lamont@chef.io", "jesse@techno-geeks.org"]
   s.license     = "Apache-2.0"
-  s.has_rdoc    = true
   s.homepage    = "https://github.com/chef/knife-linode"
   s.summary     = "Linode Support for Chef's Knife Command"
   s.description = s.summary

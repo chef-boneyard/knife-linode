@@ -21,3 +21,6 @@ doc/
 Gemfile.lock
 .rvmrc
 .ruby-version
+
+.direnv/
+.envrc
