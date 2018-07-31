@@ -14,4 +14,7 @@ matrix:
 branches:
   only:
   - master
+
+bundler_args: --without docs development
+
 script: bundle exec rake
