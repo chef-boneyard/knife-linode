@@ -2,6 +2,14 @@
 
 [![Gem Version](https://badge.fury.io/rb/knife-linode.svg)](https://rubygems.org/gems/knife-linode) [![Build Status](https://travis-ci.org/chef/knife-linode.svg?branch=master)](https://travis-ci.org/chef/knife-linode)
 
+* **Umbrella Project: [Knife](https://github.com/chef/chef-oss-practices/blob/master/projects/knife.md)**
+
+* **Project State [Deprecated](https://github.com/chef/chef-oss-practices/blob/master/repo-management/repo-states.md#deprecated)**
+
+* **Issues [Response Time Maximum](https://github.com/chef/chef-oss-practices/blob/master/repo-management/repo-states.md#what-is-the-response-time-maximum): None**
+
+* **Pull Request [Response Time Maximum](https://github.com/chef/chef-oss-practices/blob/master/repo-management/repo-states.md#what-is-the-response-time-maximum): None**
+
 ## Description
 
 This is the official Chef Knife plugin for Linode. This plugin gives knife the ability to create, bootstrap, and manage Linode instances.
