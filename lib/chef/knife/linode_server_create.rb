@@ -210,7 +210,7 @@ class Chef
 
         image = connection.images.get(locate_config_value(:linode_image).to_i)
 
-        kernel = connection.kernels.get(locate_config_value(:linode_kernel).to_i)
+        kernel = connection.kernels.find { |k| k.id == locate_config_value(:linode_kernel) }
 
         # FIXME: tweakable stack_script
         # FIXME: tweakable payment terms
